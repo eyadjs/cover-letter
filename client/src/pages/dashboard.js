@@ -2,6 +2,7 @@ import { React, useState, useEffect } from 'react'
 import { Flex, Input, Button } from 'antd'
 import { Select } from 'antd'
 import axios from 'axios'
+import ProjectInput from '../components/projectInput'
 
 export default function Dashboard() {
         
@@ -40,8 +41,40 @@ export default function Dashboard() {
         experience: [],
     })
 
-    const updateName = (e) => { // implement this and for the rest of the fields
+    const updateName = (e) => {
+        setUserInfo({ ... userInfo,
+            name: e.target.value
+        })
+    }
 
+    const updateMajor = (e) => { 
+        setUserInfo({ ... userInfo,
+            major: e.target.value
+        })
+    }
+
+    const updateDegree = (e) => { 
+        setUserInfo({ ... userInfo,
+            degree: e.target.value
+        })
+    }
+
+    const updateInstitution = (e) => {
+        setUserInfo({ ... userInfo,
+            institution: e.target.value
+        })
+    }
+
+    const updateProjects = (e) => { 
+        setUserInfo({ ... userInfo,
+            institution: e.target.value
+        })
+    }
+
+    const updateExperience = (e) => { 
+        setUserInfo({ ... userInfo,
+            institution: e.target.value
+        })
     }
 
     const sendUserInfo = async () => {
@@ -54,19 +87,29 @@ export default function Dashboard() {
         }
     }
 
+    const [projectCount, setProjectCount] = useState([1])
+    
+    const addProject = () => {
+        console.log('adding project')
+        console.log(projectCount)
+        setProjectCount([...projectCount, projectCount[projectCount.length -1 ]+1])
 
+    }
+
+    const heading_style = 'text-4xl ml-[20%] mb-5'
   return (
-    <div>
+    <div>   
         <div className='lg:mr-[20%] lg:ml-[20%] mr-[10%] ml-[10%]'>
             <Input className='lg:w-[50%] md:w-[100%]' placeholder='What is your full name?' showCount maxLength={50} onBlur={updateName}/>
         </div>
-        <p className='text-4xl ml-[20%] mb-5'>Education</p>
+        <p className={heading_style}>Education</p>
         <div className='lg:mr-[20%] lg:ml-[20%] mr-[10%] ml-[10%]'>
-            <Input className='lg:w-[50%] md:w-[100%]' placeholder='What institution are you attending?' showCount maxLength={50}/>
-            <Input className='lg:w-[50%] md:w-[100%]' placeholder='What is your major?' showCount maxLength={50}/>
+            <Input className='lg:w-[50%] md:w-[100%]' placeholder='What institution are you attending?' onBlur={updateInstitution} showCount maxLength={50}/>
+            <Input className='lg:w-[50%] md:w-[100%]' placeholder='What is your major?' onBlur={updateMajor} showCount maxLength={50}/>
             <Select
                 className='lg:w-[50%] md:w-[100%]'
                 showSearch
+                onBlur={updateDegree}
                 placeholder="Select your highest degree"
                 filterOption={(input, option) =>
                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
@@ -75,25 +118,12 @@ export default function Dashboard() {
             />
         </div>
 
-        <p className='text-4xl ml-[20%] mb-5'>Projects</p>
-        <div className='lg:mr-[20%] lg:ml-[20%] mr-[10%] ml-[10%]'>
-            <Flex vertical gap={32}>
-                <Input className='lg:w-[50%] md:w-[100%]' placeholder='What is your project called?' showCount maxLength={50}/>
-                <TextArea
-                showCount
-                maxLength={300}
+        <p className={heading_style}>Projects</p>
+        
+        {projectCount.map((projectID) => { return <ProjectInput key={projectID}></ProjectInput>})}
+        <Button onClick={addProject}>Add project</Button>
 
-                placeholder="Additional details about your project (tech stack, results, etc.)"
-                style={{
-                    height: 120,
-                    resize: 'none',
-                }}
-                />
-            </Flex>
-            {/* <p className='text-1xl'>Add another project +</p> */}
-        </div>
-
-        <p className='text-4xl ml-[20%] mb-5'>Experience</p>
+        <p className={heading_style}>Experience</p>
         <div className='lg:mr-[20%] lg:ml-[20%] mr-[10%] ml-[10%]'>
             <Flex vertical gap={32}>
                 <Input className='lg:w-[50%] md:w-[100%]' placeholder='What company did you work at?' showCount maxLength={50}/>
