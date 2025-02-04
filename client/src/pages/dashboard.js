@@ -65,9 +65,13 @@ export default function Dashboard() {
         })
     }
 
-    const updateProjects = (e) => { 
+    const updateProjects = (e, projectID) => { 
         setUserInfo({ ... userInfo,
-            institution: e.target.value
+            projects: [...userInfo.projects, {
+                projectID: projectID,
+                projectTitle: "",
+                projectDescription: ""
+            }]
         })
     }
 
@@ -95,6 +99,7 @@ export default function Dashboard() {
         setProjectCount([...projectCount, projectCount[projectCount.length -1 ]+1])
 
     }
+    
 
     const heading_style = 'text-4xl ml-[20%] mb-5'
   return (
@@ -120,7 +125,7 @@ export default function Dashboard() {
 
         <p className={heading_style}>Projects</p>
         
-        {projectCount.map((projectID) => { return <ProjectInput key={projectID}></ProjectInput>})}
+        {projectCount.map((projectID) => { return <ProjectInput key={projectID} onBlur={(e) => {updateProjects(e, projectID)}}></ProjectInput>})}
         <Button onClick={addProject}>Add project</Button>
 
         <p className={heading_style}>Experience</p>
